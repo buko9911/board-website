@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Error</title>
+  <!-- 여기에 필요한 스타일이나 스크립트를 추가하세요. -->
+  <style>
+    body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f8f8;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.error-container {
+    text-align: center;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #d9534f; /* Bootstrap's danger color */
+}
+
+p {
+    color: #333;
+    margin: 10px 0;
+}
+
+  </style>
+</head>
+<body>
+
+<div>
+  <h2>Error</h2>
+  <p th:text="${errorMessage}"></p>
+  <!-- 기타 에러 메시지에 관련된 내용을 추가하세요. -->
+</div>
+
+</body>
+</html>

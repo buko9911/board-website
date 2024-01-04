@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <title>게시글 상세 페이지</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 8px;
+            text-align: center;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .post {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+             word-wrap: break-word;
+
+             overflow: hidden;
+             height: auto;
+        }
+
+        .post h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .post p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .comments {
+            margin-top: 20px;
+        }
+
+        .comment {
+            border-bottom: 1px solid #eee;
+            padding: 6px;
+            margin-bottom: 1px;
+            word-wrap: break-word;
+             position: relative;
+             overflow: hidden;
+             height: auto;
+
+        }
+        .delete-link {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin-top: 10px; /* 필요에 따라 상단 여백을 조정합니다. */
+    }
+
+        .comment p {
+            color: #555;
+        }
+        .comment a{
+             text-decoration: none; /* 밑줄 제거 */
+             color: #343a40; /* 링크 색상 지정 */
+        }
+
+        .comment-form {
+            margin-top: 15px;
+        }
+
+        .comment-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #f5faf8;
+            color: #1c915e;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #1c915e;
+        }
+ .footer{
+    position: fixed;
+    bottom: 15px;
+    left: 15px;
+}
+<!--th:href="@{/comment/delete/{commentId} (comment=${comment.id})}"-->
+    </style>
+</head>
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader"/></div>
+<!--<header>
+    <h3>게시글 상세 페이지</h3>
+</header>-->
+<p th:if="${errorMessage}!=null">[[${errorMessage}]]</p>
+<main>
+    <div class="post">
+        <h3 th:text="${postResponse.title}"></h3>
+        <p th:text="${postResponse.content}"></p>
+        <p class="meta" style="font-size:12px">작성자 : [[${postResponse.userName}]] </p>
+    </div>
+<form role="form" th:action="@{/post/createComment/{postId}(postId=${postResponse.id})}" th:object="${commentForm}"
+      method="post">
+    <div class="comments" >
+        <div class="comment-form">
+            <label th:for="content" class="form-label"></label>
+            <textarea id="content" placeholder="댓글을 입력하세요" th:field="*{content}" required></textarea>
+            <button type="submit" class="btn btn-success">댓글 추가</button>
+        </div>
+        <div class="comment" th:each="comment : ${postResponse.commentList}">
+            <p style="font-size:12px">작성자 : [[${comment.userName}]]       [[${comment.localDateTime}]]</p>
+            <p th:text="${comment.content}"><strong>댓글 작성자:</strong> 댓글 내용이 여기에 들어갑니다.</p>
+            <a th:if="${sessionMemberId == comment.memberId}"
+               th:href="'javascript:deleteComment('+${comment.id}+')'" class="delete-link">삭제</a>
+        </div>
+    </div>
+</form>
+</main>
+<div class="footer">
+    <!-- Footer 내용 추가 -->
+    &copy; 2024 Board Website developed by KO BYEONG UK
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+<script>
+      function deleteComment(id) {
+        if(!confirm("삭제 하시겠습니까?")){
+            return false;
+        };
+        var form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "/comment" + "/delete/" + id);
+        document.body.appendChild(form);
+        form.submit();
+ }
+
+</script>
+</html>
