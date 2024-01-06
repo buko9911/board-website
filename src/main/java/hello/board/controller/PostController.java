@@ -31,10 +31,10 @@ public class PostController {
     public String createPostForm(HttpSession session, Model model) {
         if (session.getAttribute("memberEmail") == null) {
             model.addAttribute("memberLoginForm", new MemberLoginForm());
-            return "/members/loginForm";
+            return "members/loginForm";
         } else {
             model.addAttribute("postForm", new PostForm());
-            return "/post/createPostForm";
+            return "post/createPostForm";
         }
     }
 
@@ -51,7 +51,7 @@ public class PostController {
         PostResponse postResponse = postService.findOneWithAll(id);
         if(postResponse==null){
             model.addAttribute("errorMessage","이미 삭제된 글 입니다");
-            return "/error/postRead";
+            return "error/postRead";
         }
         log.info("post read");
         if (session.getAttribute("memberId") != null) {
@@ -61,7 +61,7 @@ public class PostController {
 
         model.addAttribute("postResponse", postResponse);
         model.addAttribute("commentForm", new CommentForm());
-        return "/post/readPostForm";
+        return "post/readPostForm";
     }
 
     @PostMapping("/post/createComment/{postId}")
@@ -94,7 +94,7 @@ public class PostController {
         model.addAttribute("post", postForm);
         model.addAttribute("memberId", memberId);
         model.addAttribute("sessionMemberId",session.getAttribute("memberId"));
-        return "/post/editForm";
+        return "post/editForm";
     }
 
     @PostMapping("/post/edit/{memberId}/{postId}")

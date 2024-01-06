@@ -26,7 +26,7 @@ public class MemberController {
     public String loginForm(Model model) {
         model.addAttribute("memberLoginForm", new MemberLoginForm());
         log.info("login get mapping");
-        return "/members/loginForm";
+        return "members/loginForm";
     }
 
     @GetMapping("/members/logout")
@@ -52,7 +52,7 @@ public class MemberController {
             log.info("login fail");
             boolean isFail = true;
             model.addAttribute("isFail", isFail);
-            return "/members/loginForm";
+            return "members/loginForm";
         }
     }
 
@@ -60,7 +60,7 @@ public class MemberController {
     @GetMapping("/members/new")
     public String createFrom(Model model) {
         model.addAttribute("memberForm", new MemberForm());
-        return "/members/createForm";
+        return "members/createForm";
     }
 
     @PostMapping("/members/new")
@@ -85,7 +85,7 @@ public class MemberController {
         model.addAttribute("postList", postResponseList);
         model.addAttribute("memberId", id);
         model.addAttribute("sessionMemberId",session.getAttribute("memberId"));
-        return "/members/postList";
+        return "members/postList";
     }
 
     @GetMapping("/members/info/{memberId}")
@@ -93,7 +93,7 @@ public class MemberController {
         MemberResponse memberResponse = memberService.findOne(id);
 
         model.addAttribute("member", memberResponse);
-        return "/members/infoForm";
+        return "members/infoForm";
     }
 
     @GetMapping("/members/edit/{memberId}")
@@ -103,7 +103,7 @@ public class MemberController {
         memberForm.setId(id);
         model.addAttribute("memberForm", memberForm);
         model.addAttribute("sessionMemberId", session.getAttribute("memberId"));
-        return "/members/editForm";
+        return "members/editForm";
     }
 
     @PostMapping("/members/edit/{memberId}")
